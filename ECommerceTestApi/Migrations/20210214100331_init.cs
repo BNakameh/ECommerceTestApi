@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ECommerceTestApi.Migrations
 {
-    public partial class _1 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -130,7 +130,7 @@ namespace ECommerceTestApi.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     StoreId = table.Column<long>(nullable: false),
-                    Count = table.Column<int>(nullable: false),
+                    Count = table.Column<long>(nullable: false),
                     ItemId = table.Column<Guid>(nullable: true),
                     OrderId = table.Column<Guid>(nullable: true)
                 },

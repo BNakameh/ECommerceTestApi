@@ -1,5 +1,4 @@
-﻿using ECommerceTestApi.SharedResources;
-using StoreakApiService.Core.Responses;
+﻿using StoreakApiService.Core.Responses;
 
 namespace ECommerceTestApi.Infrastructure
 {
@@ -14,32 +13,56 @@ namespace ECommerceTestApi.Infrastructure
 
         public CustomResponse NotFound
         {
-            get { return _responsesManager.GetResponce(ResponseResource.NotFound); }
+            get { return _responsesManager.GetResponce("NotFound"); }
         }
 
         public CustomResponse UpdatedSuccessfully
         {
-            get { return _responsesManager.GetResponce(ResponseResource.UpdatedSuccessfully); }
+            get { return _responsesManager.GetResponce("UpdatedSuccessfully"); }
+        }
+
+        public CustomResponse UpdatedFaield
+        {
+            get { return _responsesManager.GetResponce("UpdatedFaield"); }
         }
 
         public CustomResponse AddedSuccessfully
         {
-            get { return _responsesManager.GetResponce(ResponseResource.AddedSuccessfully); }
+            get { return _responsesManager.GetResponce("AddedSuccessfully"); }
+        }
+
+        public CustomResponse AddedFaield
+        {
+            get { return _responsesManager.GetResponce("AddedFaield"); }
         }
 
         public CustomResponse DeletedSuccessfully
         {
-            get { return _responsesManager.GetResponce(ResponseResource.DeletedSuccessfully); }
+            get { return _responsesManager.GetResponce("DeletedSuccessfully"); }
+        }
+
+        public CustomResponse DeletedFaield
+        {
+            get { return _responsesManager.GetResponce("DeletedFaield"); }
         }
 
         public CustomResponse ColdNotAddChildMore
         {
-            get { return _responsesManager.GetResponce(ResponseResource.ColdNotAddChildMore); }
+            get { return _responsesManager.GetResponce("ColdNotAddChildMore"); }
         }
+
+
+
+        public CustomResponse ColdNotAddOrderWithoutItems
+        {
+            get { return _responsesManager.GetResponce("ColdNotAddOrderWithoutItems"); }
+        }
+
+
 
         public CustomResponse GlobalInternalServerError()
         {
-            return _responsesManager.GetResponce(ResponseResource.InternalServerError);
+            return _responsesManager.GetResponce("InternalServerError");
         }
     }
 }

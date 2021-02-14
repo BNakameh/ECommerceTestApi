@@ -10,7 +10,7 @@ namespace ECommerceTestApi.Infrastructure.DataModel
 
         public CategoryDto()
         {
-            CategoryItems = new List<CategoryItemDto>();
+            Items = new List<ItemDto>();
         }
         #endregion
 
@@ -24,7 +24,7 @@ namespace ECommerceTestApi.Infrastructure.DataModel
         public virtual CategoryDto ChildCategory { get; set; }
 
 
-        public virtual ICollection<CategoryItemDto> CategoryItems { get; set; }
+        public virtual ICollection<ItemDto> Items { get; set; }
         #endregion
 
     }

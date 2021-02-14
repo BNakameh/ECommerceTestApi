@@ -4,14 +4,16 @@ using ECommerceTestApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerceTestApi.Migrations
 {
     [DbContext(typeof(ECommerceTestApiContext))]
-    partial class ECommerceTestApiContextModelSnapshot : ModelSnapshot
+    [Migration("20210214153647_init1")]
+    partial class init1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

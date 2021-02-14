@@ -1,8 +1,15 @@
 using ECommerceTestApi.Aplication;
 using ECommerceTestApi.Aplication.BusinessUseCases.Category;
+using ECommerceTestApi.Aplication.BusinessUseCases.Item;
+using ECommerceTestApi.Aplication.BusinessUseCases.Order;
+using ECommerceTestApi.Aplication.BusinessUseCases.OrderItem;
 using ECommerceTestApi.Aplication.Queries.Category;
+using ECommerceTestApi.Aplication.Queries.Item;
+using ECommerceTestApi.Aplication.Queries.Order;
+using ECommerceTestApi.Aplication.Queries.OrderItem;
 using ECommerceTestApi.Infrastructure;
 using ECommerceTestApi.MapperProfile;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +21,7 @@ namespace Storeak.Demo.Api
 {
     public class Startup : StoreakApiService.Core.Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, IApplicationBuilder app)
             : base(configuration, env)
         {
             ApiProjectSettings.ProjectId = ProjectNames.demo;
@@ -34,6 +41,12 @@ namespace Storeak.Demo.Api
             #region Mapper Profiles
 
             base.ConfigureAutoMapper(services, new CategoryProfile());
+
+            base.ConfigureAutoMapper(services, new ItemProfile());
+
+            base.ConfigureAutoMapper(services, new OrderProfile());
+
+            base.ConfigureAutoMapper(services, new OrderItemProfile());
             #endregion
 
             #region Services
@@ -42,6 +55,16 @@ namespace Storeak.Demo.Api
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<CategoryQuery>();
+
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<ItemQuery>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<OrderQuery>();
+
+            services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<OrderItemQuery>();
+
 
             services.AddSingleton<IResponseMessages, ResponseMessages>();
             #endregion

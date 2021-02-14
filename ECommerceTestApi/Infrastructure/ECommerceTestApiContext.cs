@@ -21,17 +21,12 @@ namespace ECommerceTestApi.Infrastructure
         public virtual DbSet<ItemDto> Items { get; set; }
         public virtual DbSet<OrderDto> Orders { get; set; }
         public virtual DbSet<OrderItemDto> OrderItems { get; set; }
-        public virtual DbSet<CategoryItemDto> CategoryItems { get; set; }
         #endregion
 
         #region Method Helper
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
-            modelBuilder.Entity<CategoryItemDto>().HasQueryFilter(x =>
-               EF.Property<long>(x, "StoreId") == Client.StoreId);
 
             modelBuilder.Entity<OrderItemDto>().HasQueryFilter(x =>
               EF.Property<long>(x, "StoreId") == Client.StoreId);

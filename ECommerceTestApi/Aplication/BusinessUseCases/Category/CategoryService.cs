@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ECommerceTestApi.Infrastructure;
+﻿using ECommerceTestApi.Infrastructure;
 using ECommerceTestApi.Infrastructure.DataModel;
 using ECommerceTestApi.Models.Category;
 using StoreakApiService.Core.Responses;
@@ -13,16 +12,14 @@ namespace ECommerceTestApi.Aplication.BusinessUseCases.Category
     {
         #region Properties And Constructor
 
-        private readonly IMapper _mapper;
         private readonly ResponseMessages _responsMessages;
         private readonly UnitOfWork _unitOfWork;
 
-        public CategoryService(IMapper mapper,
+        public CategoryService(
                                IResponseMessages responsMessages,
                                UnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _responsMessages = responsMessages as ResponseMessages;
         }
         #endregion
@@ -31,18 +28,42 @@ namespace ECommerceTestApi.Aplication.BusinessUseCases.Category
 
         public async Task<CustomResponse> Create(ActionCategoryModel request)
         {
-            var NumOfChild = _unitOfWork.CategoryRepository.GetAll().Count(x => request.ChildCategoryId.HasValue && x.ChildCategoryId.Value == request.ChildCategoryId.Value);
-            if (NumOfChild > 0)
+            var NumOfChild = 0;
+            if (request.ChildCategoryId.HasValue)
+            {
+                var entity = _unitOfWork.CategoryRepository.Find(request.ChildCategoryId.Value);
+
+                if (entity is null)
+                {
+                    return _responsMessages.NotFound;
+                }
+                NumOfChild = _unitOfWork.CategoryRepository.Find(request.ChildCategoryId.Value).LevelDeep;
+            }
+            if (NumOfChild > 2)
             {
                 return _responsMessages.ColdNotAddChildMore;
             }
 
-            var entity = _mapper.Map<CategoryDto>(request);
-            _unitOfWork.CategoryRepository.Add(entity);
+            try
+            {
+                var entity = new CategoryDto()
+                {
+                    Name = request.Name,
+                    ChildCategoryId = request.ChildCategoryId,
+                    LevelDeep = NumOfChild + 1
+                };
 
-            await _unitOfWork.SaveChangesAsync();
+                _unitOfWork.CategoryRepository.Add(entity);
 
-            return _responsMessages.AddedSuccessfully;
+                await _unitOfWork.SaveChangesAsync();
+
+                return new OkResponse(entity.Id);
+            }
+            catch
+            {
+                return _responsMessages.NotFound;
+            }
+
         }
 
         public async Task<CustomResponse> Update(Guid id, ActionCategoryModel request)
@@ -54,14 +75,15 @@ namespace ECommerceTestApi.Aplication.BusinessUseCases.Category
                 return _responsMessages.NotFound;
             }
 
-            var NumOfChild = _unitOfWork.CategoryRepository.GetAll().Count(x => request.ChildCategoryId.HasValue && x.ChildCategoryId.Value == request.ChildCategoryId.Value);
-            if (NumOfChild > 0)
+            var NumOfChild = request.ChildCategoryId.HasValue ? _unitOfWork.CategoryRepository.Find(request.ChildCategoryId.Value).LevelDeep : 1;
+            if (NumOfChild > 2)
             {
                 return _responsMessages.ColdNotAddChildMore;
             }
 
             entity.Name = request.Name;
             entity.ChildCategoryId = request.ChildCategoryId.Value;
+            entity.LevelDeep = NumOfChild;
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -70,25 +92,35 @@ namespace ECommerceTestApi.Aplication.BusinessUseCases.Category
 
         public async Task<CustomResponse> Delete(Guid id)
         {
-            var entity = _unitOfWork.CategoryRepository.Find(id);
-
-            if (entity is null)
+            try
             {
-                return _responsMessages.NotFound;
-            }
+                var entity = _unitOfWork.CategoryRepository.Find(id);
+                if (entity is null)
+                {
+                    return _responsMessages.NotFound;
+                }
 
-            var NumOfChild = _unitOfWork.CategoryRepository.GetAll().Count(x => x.ChildCategoryId == id);
-            if (NumOfChild > 0)
+                if (entity.Items.Any())
+                {
+                    return _responsMessages.DeletedFaield;
+                }
+
+                var isParent = _unitOfWork.CategoryRepository.GetAll().Any(x => x.ChildCategoryId.Value == id);
+                if (isParent)
+                {
+                    return _responsMessages.DeletedFaield;
+                }
+
+                _unitOfWork.CategoryRepository.Remove(entity);
+                await _unitOfWork.SaveChangesAsync();
+
+                return _responsMessages.DeletedSuccessfully;
+            }
+            catch
             {
-                return _responsMessages.ColdNotAddChildMore;
+                return _responsMessages.DeletedFaield;
             }
-
-            _unitOfWork.CategoryRepository.Remove(entity);
-            await _unitOfWork.SaveChangesAsync();
-
-            return _responsMessages.DeletedSuccessfully;
         }
         #endregion
-
     }
 }

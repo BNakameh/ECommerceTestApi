@@ -12,18 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="SharedResources\ResponseResource.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ResponseResource.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="SharedResources\ResponseResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResponseResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Folder Include="DataImage\" />
   </ItemGroup>
 
 </Project>

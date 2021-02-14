@@ -51,14 +51,6 @@ namespace ECommerceTestApi.Aplication
             }
         }
 
-        public GenericRepository<CategoryItemDto> CategoryItempository
-        {
-            get
-            {
-                return new GenericRepository<CategoryItemDto>(_context.CategoryItems);
-            }
-        }
-
         #endregion
 
         #region Save Changes Methods
@@ -71,26 +63,6 @@ namespace ECommerceTestApi.Aplication
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
-        }
-        #endregion
-
-        #region Transaction Methods
-
-        public async Task BeginTransaction()
-        {
-            await _context.Database.BeginTransactionAsync();
-        }
-
-        public async Task Commit()
-        {
-            var commit = await _context.Database.BeginTransactionAsync();
-             commit.Commit();
-        }
-
-        public async Task Rollback()
-        {
-            var rollback = await _context.Database.BeginTransactionAsync();
-            rollback.Rollback();
         }
         #endregion
     }

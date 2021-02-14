@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceTestApi.Migrations
 {
     [DbContext(typeof(ECommerceTestApiContext))]
-    [Migration("20210213081008__1")]
-    partial class _1
+    [Migration("20210214100331_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,7 +166,7 @@ namespace ECommerceTestApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Count");
+                    b.Property<long>("Count");
 
                     b.Property<string>("CreatedBy");
 

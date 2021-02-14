@@ -1,4 +1,5 @@
 ﻿using StoreakApiService.Core.Context.DataModel;
+using System;
 using System.Collections.Generic;
 
 namespace ECommerceTestApi.Infrastructure.DataModel
@@ -10,7 +11,6 @@ namespace ECommerceTestApi.Infrastructure.DataModel
         public ItemDto()
         {
             OrderItems = new List<OrderItemDto>();
-            CategoryItems = new List<CategoryItemDto>();
         }
         #endregion
 
@@ -22,8 +22,10 @@ namespace ECommerceTestApi.Infrastructure.DataModel
 
         #region Navigation Properties
 
+        public virtual CategoryDto Category { get; set; }
+        public Guid? CategoryId { get; set; }
+
         public virtual ICollection<OrderItemDto> OrderItems { get; set; }
-        public virtual ICollection<CategoryItemDto> CategoryItems { get; set; }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace ECommerceTestApi.Infrastructure.DataModel
         }
         #endregion
 
-        public int Count { get; set; }
+        public long Count { get; set; }
 
         #region Navigation Properties
 
